@@ -1,88 +1,110 @@
-﻿using API.DeskBookService.Core.Domain;
-using API.DeskBookService.Core.Interfaces;
-using API.DeskBookService.Core.Processor.Interfaces;
+﻿using API.DeskBookService.Core.Conracts.v1.Requests;
+using API.DeskBookService.Core.Contracts.v1;
+using API.DeskBookService.Core.DataInterfaces;
+using API.DeskBookService.Core.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace API.DeskBookService.Web.Controllers
 {
-    [Route("api/[controller]")]
+    /// <summary>
+    /// Bookings Controller
+    /// </summary>
     [ApiController]
     public class BookingsController : Controller
     {
-        private IDeskBookingRepository _deskBookingkRepository;
-        private IDeskBookingRequestProcessor _processor;
+        private IBookingRepository _bookingRepository;
 
-        public BookingsController(IDeskBookingRepository deskBookingRepository, IDeskBookingRequestProcessor processor)
+        /// <summary>
+        /// Inject IBookingRepository
+        /// </summary>
+        /// <param name="bookingRepository"></param>
+        public BookingsController(IBookingRepository bookingRepository)
         {
-            _deskBookingkRepository = deskBookingRepository;
-            _processor = processor;
+            _bookingRepository = bookingRepository;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllBookingsAsync()
+        /// <summary>
+        /// Get all bookings
+        /// </summary>
+        /// <returns>List of DeskBooking objects</returns>
+        [Produces("application/json")]
+        [HttpGet(APIRoutesV1.Bookings.GetBokingsAsync)]
+        public async Task<IActionResult> GetBookingsAsync()
         {
-            var deskBookings = await _deskBookingkRepository.GetAll();
+            var deskBookings = await _bookingRepository.Get();
+            if (deskBookings == null)
+                return NotFound(new { result = "fail",message = "No Bookings found" });
 
             return Ok(deskBookings);
         }
 
-        [HttpGet("{id:length(24)}", Name = "GetBooking")]
-        public async Task<IActionResult> GetBookingAsync(string id)
+        /// <summary>
+        /// Get booking by ID
+        /// </summary>
+        /// <param name="id">The ID of the booking you want to get</param>
+        /// <returns>Return the requested DeskBooking onject</returns>
+        [Produces("application/json")]
+        [HttpGet(APIRoutesV1.Bookings.GetBokingAsync)]
+        public async Task<IActionResult> GetBookingAsync([FromRoute] string id)
         {
-            var deskBooking = await _deskBookingkRepository.Get(id);
-
+            var deskBooking = await _bookingRepository.Get(id);
             if (deskBooking == null)
-            {
-                return NotFound();
-            }
+                return NotFound(new { result = "fail",message = $"Booking id:{id} not found" });
 
             return Ok(deskBooking);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> BookAsync(DeskBookingRequest deskBookingRequest)
+        /// <summary>
+        /// Save new booking
+        /// </summary>
+        /// <param name="deskBookingRequest"></param>
+        /// <returns>Return booking result</returns>
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [HttpPost(APIRoutesV1.Bookings.BookAsync)]
+        public async Task<IActionResult> BookAsync([FromBody] DeskBookingRequest deskBookingRequest)
         {
-            var result = await _processor.BookDesk(deskBookingRequest);
-            return Ok(result.Code);
+            var result = await _bookingRepository.BookDesk(deskBookingRequest);
+            return Ok(new { message = result.Code.ToString() });
         }
 
-        [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> UpdateBookingAsync(string id, DeskBooking deskBookingIn)
+        /// <summary>
+        /// Update booking by ID
+        /// </summary>
+        /// <param name="id">The ID of the booking you want to update</param>
+        /// <param name="deskBookingIn">Booking with new info</param>
+        /// <returns>An ActionResult</returns>
+        [Consumes("application/json")]
+        [HttpPut(APIRoutesV1.Bookings.UpdateBokingAsync)]
+        public async Task<IActionResult> UpdateBookingAsync([FromRoute] string id, [FromBody] DeskBooking deskBookingIn)
         {
-            var deskBooking = await _deskBookingkRepository.Get(id);
-
+            var deskBooking = await _bookingRepository.Get(id);
             if (deskBooking == null)
-            {
-                return NotFound();
-            }
+                return NotFound(new { result = "fail",message = $"Booking id:{id} not found" });
 
-            var success = await _deskBookingkRepository.Update(id, deskBookingIn);
-
+            var success = await _bookingRepository.Update(id, deskBookingIn);
             if (success)
-            {
-                return Ok();
-            }
+                return Ok(deskBookingIn);
 
             return NoContent();
         }
 
-        [HttpDelete("{id:length(24)}")]
-        public async Task<IActionResult> DeleteBookingkAsync(string id)
+        /// <summary>
+        /// Delete booking by ID
+        /// </summary>
+        /// <param name="id">The ID of the booking you want to delete</param>
+        /// <returns>An ActionResult</returns>
+        [HttpDelete(APIRoutesV1.Bookings.DeleteBokingAsync)]
+        public async Task<IActionResult> DeleteBookingkAsync([FromRoute] string id)
         {
-            var deskBookingIn = await _deskBookingkRepository.Get(id);
-
+            var deskBookingIn = await _bookingRepository.Get(id);
             if (deskBookingIn == null)
-            {
-                return NotFound();
-            }
+                return NotFound(new { message = $"Booking id:{id} not found" });
 
-            var success = await _deskBookingkRepository.Remove(deskBookingIn.Id);
-
+            var success = await _bookingRepository.Remove(deskBookingIn.Id);
             if (success)
-            {
-                return Ok();
-            }
+                return Ok(new { result = "success",message =$"Booking id:{id} successfully deleted"});
 
             return NoContent();
         }

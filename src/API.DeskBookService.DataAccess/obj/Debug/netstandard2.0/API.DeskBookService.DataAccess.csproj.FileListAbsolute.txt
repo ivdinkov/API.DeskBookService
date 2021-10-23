@@ -1,0 +1,12 @@
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\bin\Debug\netstandard2.0\API.DeskBookService.DataAccess.deps.json
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\bin\Debug\netstandard2.0\API.DeskBookService.DataAccess.dll
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\bin\Debug\netstandard2.0\API.DeskBookService.DataAccess.pdb
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\bin\Debug\netstandard2.0\API.DeskBookService.Core.dll
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\bin\Debug\netstandard2.0\API.DeskBookService.Core.pdb
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\obj\Debug\netstandard2.0\API.DeskBookService.DataAccess.csprojAssemblyReference.cache
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\obj\Debug\netstandard2.0\API.DeskBookService.DataAccess.AssemblyInfoInputs.cache
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\obj\Debug\netstandard2.0\API.DeskBookService.DataAccess.AssemblyInfo.cs
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\obj\Debug\netstandard2.0\API.DeskBookService.DataAccess.csproj.CoreCompileInputs.cache
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\obj\Debug\netstandard2.0\API.DeskBookService.DataAccess.csproj.CopyComplete
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\obj\Debug\netstandard2.0\API.DeskBookService.DataAccess.dll
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Mongo.Repository\obj\Debug\netstandard2.0\API.DeskBookService.DataAccess.pdb

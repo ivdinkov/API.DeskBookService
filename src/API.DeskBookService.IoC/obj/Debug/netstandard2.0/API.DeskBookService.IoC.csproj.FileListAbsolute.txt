@@ -1,0 +1,10 @@
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.IoC\bin\Debug\netstandard2.0\API.DeskBookService.IoC.deps.json
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.IoC\bin\Debug\netstandard2.0\API.DeskBookService.IoC.dll
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.IoC\bin\Debug\netstandard2.0\API.DeskBookService.IoC.pdb
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.IoC\obj\Debug\netstandard2.0\API.DeskBookService.IoC.GeneratedMSBuildEditorConfig.editorconfig
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.IoC\obj\Debug\netstandard2.0\API.DeskBookService.IoC.AssemblyInfoInputs.cache
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.IoC\obj\Debug\netstandard2.0\API.DeskBookService.IoC.AssemblyInfo.cs
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.IoC\obj\Debug\netstandard2.0\API.DeskBookService.IoC.csproj.CoreCompileInputs.cache
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.IoC\obj\Debug\netstandard2.0\API.DeskBookService.IoC.dll
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.IoC\obj\Debug\netstandard2.0\API.DeskBookService.IoC.pdb
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.IoC\obj\Debug\netstandard2.0\API.DeskBookService.IoC.csproj.AssemblyReference.cache

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "5sMI4usf36imcwMNewBDsWUbLot1CwLmEPbvzqHJvHKgA0BQzBggqCTrNnpshC2LbFLlvoW7wjnPXz1MzMs2Vg==",
+  "success": true,
+  "projectFilePath": "D:\\CODEBASE\\API.DeskBookService\\src\\API.DeskBookService.IoC\\API.DeskBookService.IoC.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ivdin\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\ivdin\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

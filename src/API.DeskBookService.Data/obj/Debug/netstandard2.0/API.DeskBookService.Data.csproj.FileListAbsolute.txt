@@ -1,0 +1,14 @@
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\bin\Debug\netstandard2.0\API.DeskBookService.Data.deps.json
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\bin\Debug\netstandard2.0\API.DeskBookService.Data.dll
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\bin\Debug\netstandard2.0\API.DeskBookService.Data.pdb
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\bin\Debug\netstandard2.0\API.DeskBookService.Core.dll
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\bin\Debug\netstandard2.0\API.DeskBookService.Core.pdb
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\bin\Debug\netstandard2.0\API.DeskBookService.Core.xml
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\obj\Debug\netstandard2.0\API.DeskBookService.Data.csproj.AssemblyReference.cache
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\obj\Debug\netstandard2.0\API.DeskBookService.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\obj\Debug\netstandard2.0\API.DeskBookService.Data.AssemblyInfoInputs.cache
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\obj\Debug\netstandard2.0\API.DeskBookService.Data.AssemblyInfo.cs
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\obj\Debug\netstandard2.0\API.DeskBookService.Data.csproj.CoreCompileInputs.cache
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\obj\Debug\netstandard2.0\API.DeskBookService.Data.dll
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\obj\Debug\netstandard2.0\API.DeskBookService.Data.pdb
+D:\CODEBASE\API.DeskBookService\src\API.DeskBookService.Data\obj\Debug\netstandard2.0\API.DeskBookService.Data.csproj.CopyComplete

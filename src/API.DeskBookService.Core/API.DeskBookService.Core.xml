@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API.DeskBookService.Core</name>
+    </assembly>
+    <members>
+        <member name="T:API.DeskBookService.Core.Contracts.v1.APIRoutesV1">
+            <summary>
+            Class containing routes for different API versions
+            </summary>
+        </member>
+        <member name="T:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Desks">
+            <summary>
+            Desk routes class 
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Desks.GetDesksAsync">
+            <summary>
+            Get all desks async
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Desks.GetDeskAsync">
+            <summary>
+            Get desk by Id
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Desks.SaveDeskAsync">
+            <summary>
+            Post new desk
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Desks.UpdateDeskAsync">
+            <summary>
+            Update desk
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Desks.DeleteDeskAsync">
+            <summary>
+            Delete desk by Id
+            </summary>
+        </member>
+        <member name="T:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Bookings">
+            <summary>
+            Booking class routes
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Bookings.GetBokingsAsync">
+            <summary>
+            Get all bookings async
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Bookings.GetBokingAsync">
+            <summary>
+            Get desk by Id
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Bookings.BookAsync">
+            <summary>
+            Post new desk
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Bookings.UpdateBokingAsync">
+            <summary>
+            Update desk
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Contracts.v1.APIRoutesV1.Bookings.DeleteBokingAsync">
+            <summary>
+            Delete desk by Id
+            </summary>
+        </member>
+        <member name="T:API.DeskBookService.Core.Contracts.DeskSaveRequest">
+            <summary>
+            New desk request
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Contracts.DeskSaveRequest.Name">
+            <summary>
+            The Name of the Desk
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Contracts.DeskSaveRequest.Description">
+            <summary>
+            The description of the Desk
+            </summary>
+        </member>
+        <member name="T:API.DeskBookService.Core.Conracts.v1.Requests.DeskBookingRequest">
+            <summary>
+            DeskBookingRequest
+            </summary>
+        </member>
+        <member name="T:API.DeskBookService.Core.Conracts.v1.Responses.DeskBookingResult">
+            <summary>
+            DeskBookingResult with result Code and DeskBookingId
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Conracts.v1.Responses.DeskBookingResult.Code">
+            <summary>
+            Result code
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Conracts.v1.Responses.DeskBookingResult.DeskBookingId">
+            <summary>
+            DeskBookingId
+            </summary>
+        </member>
+        <member name="T:API.DeskBookService.Core.Conracts.v1.Responses.DeskBookingResultCode">
+            <summary>
+            DeskBooking result codes
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Conracts.v1.Responses.DeskBookingResultCode.Success">
+            <summary>
+            Success
+            </summary>
+        </member>
+        <member name="F:API.DeskBookService.Core.Conracts.v1.Responses.DeskBookingResultCode.NoDeskAvailable">
+            <summary>
+            No desk available for this date
+            </summary>
+        </member>
+        <member name="T:API.DeskBookService.Core.DataInterfaces.IBookingRepository">
+            <summary>
+            IBookingRepository
+            </summary>
+        </member>
+        <member name="M:API.DeskBookService.Core.DataInterfaces.IBookingRepository.BookDesk(API.DeskBookService.Core.Conracts.v1.Requests.DeskBookingRequest)">
+            <summary>
+            User request to book a desk
+            </summary>
+            <param name="deskBookingRequest">The user booking request</param>
+            <returns>DeskBookingResult Task</returns>
+        </member>
+        <member name="T:API.DeskBookService.Core.Domain.Desk">
+            <summary>
+            Desk with Id, Name and Description
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Domain.Desk.Id">
+            <summary>
+            The Id of the Desk
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Domain.Desk.Name">
+            <summary>
+            The Name of the Desk
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Domain.Desk.Description">
+            <summary>
+            The description of the Desk
+            </summary>
+        </member>
+        <member name="T:API.DeskBookService.Core.Domain.DeskBooking">
+            <summary>
+            DeskBooking with Id and Desk Id
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Domain.DeskBooking.Id">
+            <summary>
+            The Id of the DeskBooking
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Domain.DeskBooking.DeskId">
+            <summary>
+            The DeskId of the DeskBooking
+            </summary>
+        </member>
+        <member name="T:API.DeskBookService.Core.Domain.DeskBookingBase">
+            <summary>
+            DeskBookingBase
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Domain.DeskBookingBase.FirstName">
+            <summary>
+            The first name of the person making the booking
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Domain.DeskBookingBase.LastName">
+            <summary>
+            The last name of the person making the booking
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Domain.DeskBookingBase.Email">
+            <summary>
+            The email of the person making the booking
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Domain.DeskBookingBase.Message">
+            <summary>
+            The message of the person making the booking
+            </summary>
+        </member>
+        <member name="P:API.DeskBookService.Core.Domain.DeskBookingBase.Date">
+            <summary>
+            The booking date of the booking
+            </summary>
+        </member>
+        <member name="T:API.DeskBookService.Core.ReadXml">
+            <summary>
+            Class wih a static methd to read generated Xml file
+            </summary>
+        </member>
+        <member name="M:API.DeskBookService.Core.ReadXml.GetXml">
+            <summary>
+            Return the path to the XML file
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

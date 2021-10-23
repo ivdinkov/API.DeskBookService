@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API.DeskBookService.Web</name>
+    </assembly>
+    <members>
+        <member name="T:API.DeskBookService.Web.Controllers.BookingsController">
+            <summary>
+            Bookings Controller
+            </summary>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.BookingsController.#ctor(API.DeskBookService.Core.DataInterfaces.IBookingRepository)">
+            <summary>
+            Inject IBookingRepository
+            </summary>
+            <param name="bookingRepository"></param>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.BookingsController.GetBookingsAsync">
+            <summary>
+            Get all bookings
+            </summary>
+            <returns>List of DeskBooking objects</returns>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.BookingsController.GetBookingAsync(System.String)">
+            <summary>
+            Get booking by ID
+            </summary>
+            <param name="id">The ID of the booking you want to get</param>
+            <returns>Return the requested DeskBooking onject</returns>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.BookingsController.BookAsync(API.DeskBookService.Core.Conracts.v1.Requests.DeskBookingRequest)">
+            <summary>
+            Save new booking
+            </summary>
+            <param name="deskBookingRequest"></param>
+            <returns>Return booking result</returns>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.BookingsController.UpdateBookingAsync(System.String,API.DeskBookService.Core.Domain.DeskBooking)">
+            <summary>
+            Update booking by ID
+            </summary>
+            <param name="id">The ID of the booking you want to update</param>
+            <param name="deskBookingIn">Booking with new info</param>
+            <returns>An ActionResult</returns>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.BookingsController.DeleteBookingkAsync(System.String)">
+            <summary>
+            Delete booking by ID
+            </summary>
+            <param name="id">The ID of the booking you want to delete</param>
+            <returns>An ActionResult</returns>
+        </member>
+        <member name="T:API.DeskBookService.Web.Controllers.DesksController">
+            <summary>
+            Desks Controller
+            </summary>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.DesksController.#ctor(API.DeskBookService.Core.DataInterfaces.IDeskRepository)">
+            <summary>
+            Inject IDeskRepository
+            </summary>
+            <param name="deskRepository"></param>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.DesksController.GetDesksAsync">
+            <summary>
+            Get all desks
+            </summary>
+            <returns>Return List of Desk objects</returns>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.DesksController.GetDeskAsync(System.String)">
+            <summary>
+            Get desk by ID
+            </summary>
+            <param name="id">The ID of the desk you want to get</param>
+            <returns>Return the requested Desk object</returns>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.DesksController.SaveDeskAsync(API.DeskBookService.Core.Contracts.DeskSaveRequest)">
+            <summary>
+            Save new desk
+            </summary>
+            <param name="newDesk">New desk object you want to save</param>
+            <returns>Return the new Desk</returns>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.DesksController.UpdateDeskAsync(System.String,API.DeskBookService.Core.Domain.Desk)">
+            <summary>
+            Update desk by ID
+            </summary>
+            <param name="id">The ID of the desk you want to update</param>
+            <param name="deskIn">Desk with new info</param>
+            <returns>An ActionResult</returns>
+        </member>
+        <member name="M:API.DeskBookService.Web.Controllers.DesksController.DeleteDeskAsync(System.String)">
+            <summary>
+            Delete desk by ID
+            </summary>
+            <param name="id">The ID of the desk you want to delete</param>
+            <returns>An ActionResult</returns>
+            <remarks>
+            Sample request (This request will delete Desk by Id) \
+            DELETE /desks/id
+            </remarks>
+        </member>
+    </members>
+</doc>

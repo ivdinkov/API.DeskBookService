@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\API.DeskBookService.Core\\Service",
+    "\\src\\API.DeskBookService.DataAccess\\DataSettings",
+    "\\src\\API.DeskBookService.DataAccess\\obj",
+    "\\src\\API.DeskBookService.DataAccess\\Repository",
+    "\\test"
+  ],
+  "SelectedNode": "\\src\\API.DeskBookService.DataAccess",
+  "PreviewInSolutionExplorer": false
+}
