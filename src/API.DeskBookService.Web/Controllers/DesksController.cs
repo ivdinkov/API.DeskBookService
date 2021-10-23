@@ -110,8 +110,8 @@ namespace API.DeskBookService.Web.Controllers
             var success = await _deskRepository.Remove(desk.Id);
             if (success)
                 return Ok(new { result="success",message = $"Desk id:{id} successfully deleted" });
-
-            return NoContent();
+            else
+                return Ok(new { result = "fail", message = $"Unable to delete Desk id:{id}" });
         }
     }
 }
