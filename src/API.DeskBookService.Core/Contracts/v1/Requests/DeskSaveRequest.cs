@@ -1,18 +1,11 @@
-﻿namespace API.DeskBookService.Core.Contracts
+﻿using API.DeskBookService.Core.Domain;
+
+namespace API.DeskBookService.Core.Contracts
 {
     /// <summary>
     /// New desk request
     /// </summary>
-    public class DeskSaveRequest
+    public class DeskSaveRequest : DeskBase
     {
-        /// <summary>
-        /// The Name of the Desk
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// The description of the Desk
-        /// </summary>
-        public string Description { get; set; }
     }
 }

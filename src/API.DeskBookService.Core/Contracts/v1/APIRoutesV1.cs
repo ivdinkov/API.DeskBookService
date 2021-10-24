@@ -44,8 +44,8 @@
             /// <summary>
             /// Get all bookings async
             /// </summary>
-            public const string GetBokingsAsync = "api/v1/bookings";
-
+            public const string GetBokingsAsync = "api/v1/bookings";            
+            
             /// <summary>
             /// Get desk by Id
             /// </summary>

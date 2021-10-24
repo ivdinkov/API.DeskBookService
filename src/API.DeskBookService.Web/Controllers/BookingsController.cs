@@ -25,18 +25,17 @@ namespace API.DeskBookService.Web.Controllers
         }
 
         /// <summary>
-        /// Get all bookings
+        /// Return list of bokings
         /// </summary>
-        /// <returns>List of DeskBooking objects</returns>
+        /// <returns>List of bokings</returns>
         [Produces("application/json")]
         [HttpGet(APIRoutesV1.Bookings.GetBokingsAsync)]
         public async Task<IActionResult> GetBookingsAsync()
         {
-            var deskBookings = await _bookingRepository.Get();
-            if (deskBookings == null)
-                return NotFound(new { result = "fail",message = "No Bookings found" });
-
-            return Ok(deskBookings);
+                var deskBookings = await _bookingRepository.Get();
+                if (deskBookings == null)
+                    return NotFound(new { result = "fail",message = "No Bookings found" });
+                return Ok(deskBookings);
         }
 
         /// <summary>
@@ -108,5 +107,6 @@ namespace API.DeskBookService.Web.Controllers
 
             return NoContent();
         }
-    }
+
+   }
 }

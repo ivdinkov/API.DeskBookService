@@ -3,7 +3,6 @@ using API.DeskBookService.Core.Conracts.v1.Responses;
 using API.DeskBookService.Core.DataInterfaces;
 using API.DeskBookService.Core.Domain;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,23 +28,13 @@ namespace API.DeskBookService.Data.Repository
 
         public async Task<DeskBookingResult> BookDesk(DeskBookingRequest deskBookingRequest)
         {
-            if (deskBookingRequest == null)
-            {
-                throw new ArgumentNullException(nameof(deskBookingRequest));
-            }
-
-            var bookings = await _deskBookings.Find(_ => true).ToListAsync();
-            var desks = await _desks.Find(_ => true).ToListAsync();
-
-            var bookedDesks = bookings.Where(b => b.Date == deskBookingRequest.Date).Select(d => d.DeskId).ToList();
-            var availableDesks = desks.Where(a => !bookedDesks.Contains(a.Id));
+            var bookings = await _deskBookings.Find(d => d.DeskId.Equals(deskBookingRequest.DeskId)).ToListAsync();
+            var isBooked = bookings.Where(s => s.Date.ToShortDateString() == deskBookingRequest.Date.ToShortDateString()).Any();
 
             var result = Create<DeskBookingResult>(deskBookingRequest);
-
-            if (availableDesks.FirstOrDefault() is Desk availableDesk)
+            if (!isBooked)
             {
                 var deskBooking = Create<DeskBooking>(deskBookingRequest);
-                deskBooking.DeskId = availableDesk.Id;
 
                 await Save(deskBooking);
 
@@ -56,7 +45,6 @@ namespace API.DeskBookService.Data.Repository
             {
                 result.Code = DeskBookingResultCode.NoDeskAvailable;
             }
-
             return result;
         }
 
@@ -70,22 +58,23 @@ namespace API.DeskBookService.Data.Repository
             return await _deskBookings.Find(_ => true).ToListAsync();
         }
 
+        public async Task<bool> Update(string id, DeskBooking deskBooking)
+        {
+            var result = await _deskBookings.ReplaceOneAsync(desk => deskBooking.Id == id, deskBooking);
+            return result.IsAcknowledged && result.ModifiedCount > 0;
+        }   
+        
         public async Task<bool> Remove(string id)
         {
             var result = await _deskBookings.DeleteOneAsync(desk => desk.Id == id);
             return result.IsAcknowledged && result.DeletedCount > 0;
         }
 
-        public async Task<bool> Update(string id, DeskBooking deskBooking)
-        {
-            var result = await _deskBookings.ReplaceOneAsync(desk => deskBooking.Id == id, deskBooking);
-            return result.IsAcknowledged && result.ModifiedCount > 0;
-        }
-
         private static T Create<T>(DeskBookingRequest request) where T : DeskBookingBase, new()
         {
             return new T
             {
+                DeskId = request.DeskId,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,

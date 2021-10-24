@@ -15,9 +15,5 @@ namespace API.DeskBookService.Core.Domain
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        /// <summary>
-        /// The DeskId of the DeskBooking
-        /// </summary>
-        public string DeskId { get; set; }
     }
 }
