@@ -1,18 +1,10 @@
-using API.DeskBookService.Core.DataInterfaces;
-using API.DeskBookService.Data.Context;
-using API.DeskBookService.Data.DataSettings;
-using API.DeskBookService.Data.Repository;
+using API.DeskBookService.Web.IoC;
 using API.DeskBookService.Web.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
-using System.Reflection;
 
 namespace API.DeskBookService.Web
 {
@@ -41,27 +33,7 @@ namespace API.DeskBookService.Web
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<DeskDatabaseSettings>(
-                Configuration.GetSection(nameof(DeskDatabaseSettings)));
-
-            services.AddSingleton<IDeskDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<DeskDatabaseSettings>>().Value);
-
-            services.AddTransient<IDeskBookerDataContext, DeskBookerDataContext>();
-            services.AddTransient<IBookingRepository, BookingRepository>();
-            services.AddTransient<IDeskRepository, DeskRepository>();
-
-            services.AddSwaggerGen(x =>
-            {
-                x.SwaggerDoc("v1", new OpenApiInfo { Title = "DeskBooking API", Version = "v1" });
-                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlCommentfullPath = Path.Combine(AppContext.BaseDirectory,xmlCommentsFile);
-                x.IncludeXmlComments(xmlCommentfullPath);
-                var xmlCommentfullPath2 = Core.ReadXml.GetXml();
-                x.IncludeXmlComments(xmlCommentfullPath2);
-            });
-
-            services.AddControllers();
+            services.InstallServicesInAssembly(Configuration);
         }
 
         /// <summary>
