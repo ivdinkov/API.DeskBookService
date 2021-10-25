@@ -78,15 +78,17 @@ namespace API.DeskBookService.Web.Controllers
         /// <returns>An ActionResult</returns>
         [Consumes("application/json")]
         [HttpPut(APIRoutesV1.Desks.UpdateDeskAsync)]
-        public async Task<IActionResult> UpdateDeskAsync([FromRoute] string id, [FromBody] Desk deskIn)
+        public async Task<IActionResult> UpdateDeskAsync([FromRoute] string id, [FromBody] DeskBase deskIn)
         {
             var desk = await _deskRepository.Get(id);
             if (desk == null)
                 return NotFound(new { result = "fail",message = $"Desk id:{id} not found" });
 
-            var success = await _deskRepository.Update(id, deskIn);
+            desk.Description = deskIn.Description;
+            desk.Name = deskIn.Name;
+            var success = await _deskRepository.Update(id, desk);
             if (success)
-                return Ok(deskIn);
+                return Ok(desk);
 
             return NoContent();
         }
@@ -111,7 +113,7 @@ namespace API.DeskBookService.Web.Controllers
             if (success)
                 return Ok(new { result="success",message = $"Desk id:{id} successfully deleted" });
             else
-                return Ok(new { result = "fail", message = $"Unable to delete Desk id:{id}" });
+                return Ok(new { result = "fail", message = $"Booking exist. Unable to delete Desk id:{id}" });
         }
     }
 }

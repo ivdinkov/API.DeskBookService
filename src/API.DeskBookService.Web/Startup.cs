@@ -30,6 +30,9 @@ namespace API.DeskBookService.Web
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>

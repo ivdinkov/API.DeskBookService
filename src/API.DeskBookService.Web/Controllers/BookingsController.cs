@@ -1,7 +1,7 @@
 ﻿using API.DeskBookService.Core.Conracts.v1.Requests;
 using API.DeskBookService.Core.Contracts.v1;
+using API.DeskBookService.Core.Contracts.v1.Requests;
 using API.DeskBookService.Core.DataInterfaces;
-using API.DeskBookService.Core.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -76,13 +76,17 @@ namespace API.DeskBookService.Web.Controllers
         /// <returns>An ActionResult</returns>
         [Consumes("application/json")]
         [HttpPut(APIRoutesV1.Bookings.UpdateBokingAsync)]
-        public async Task<IActionResult> UpdateBookingAsync([FromRoute] string id, [FromBody] DeskBooking deskBookingIn)
+        public async Task<IActionResult> UpdateBookingAsync([FromRoute] string id, [FromBody] DeskBookingUpdateRequest deskBookingIn)
         {
             var deskBooking = await _bookingRepository.Get(id);
             if (deskBooking == null)
                 return NotFound(new { result = "fail",message = $"Booking id:{id} not found" });
 
-            var success = await _bookingRepository.Update(id, deskBookingIn);
+            deskBooking.FirstName = deskBookingIn.FirstName;
+            deskBooking.LastName = deskBookingIn.LastName;
+            deskBooking.Email = deskBookingIn.Email;
+            deskBooking.Message = deskBookingIn.Message;
+            var success = await _bookingRepository.Update(id, deskBooking);
             if (success)
                 return Ok(deskBookingIn);
 
