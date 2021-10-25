@@ -12,6 +12,10 @@
         /// <summary>
         /// No desk available for this date
         /// </summary>
-        NoDeskAvailable
+        NoDeskAvailable,
+        /// <summary>
+        /// Booking desk Id
+        /// </summary>
+        InvalidDeskId
     }
 }

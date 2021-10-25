@@ -33,9 +33,6 @@ namespace API.DeskBookService.Web.Controllers
         public async Task<IActionResult> GetDesksAsync()
         {
             var desks = await _deskRepository.Get();
-            if (desks == null)
-                return NotFound(new { result = "fail",message = "No Desks found" });
-
             return Ok(desks);
         }
 
@@ -48,11 +45,18 @@ namespace API.DeskBookService.Web.Controllers
         [HttpGet(APIRoutesV1.Desks.GetDeskAsync)]
         public async Task<IActionResult> GetDeskAsync([FromRoute] string id)
         {
-            var desk = await _deskRepository.Get(id);
-            if (desk == null)
-                return NotFound(new { result = "fail",message = $"Desk id:{id} not found" });
+            try
+            {
+                var desk = await _deskRepository.Get(id);
+                if (desk==null)
+                    return BadRequest(new { result = "fail", message = $"Desk id:{id} not found" }); 
 
-            return Ok(desk);
+                return Ok(desk);
+            }
+            catch (System.Exception)
+            { 
+                return BadRequest(new { result = "fail", message = "Invalid deskId!" });
+            }        
         }
 
         /// <summary>
@@ -67,7 +71,11 @@ namespace API.DeskBookService.Web.Controllers
         {
             Desk desk = new Desk { Name = newDesk.Name, Description = newDesk.Description };
             var createdDesk = await _deskRepository.Save(desk);
-            return Ok(createdDesk);
+
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+            var locationUri = baseUrl + "/" + APIRoutesV1.Desks.GetDeskAsync.Replace("{id:length(24)}", createdDesk.Id);
+
+            return Created(locationUri, createdDesk);
         }
 
         /// <summary>
@@ -80,17 +88,24 @@ namespace API.DeskBookService.Web.Controllers
         [HttpPut(APIRoutesV1.Desks.UpdateDeskAsync)]
         public async Task<IActionResult> UpdateDeskAsync([FromRoute] string id, [FromBody] DeskBase deskIn)
         {
-            var desk = await _deskRepository.Get(id);
-            if (desk == null)
-                return NotFound(new { result = "fail",message = $"Desk id:{id} not found" });
+            try
+            {
+                var desk = await _deskRepository.Get(id);
+                if (desk == null)
+                    return BadRequest(new { result = "fail", message = $"Desk id:{id} not found" });
 
-            desk.Description = deskIn.Description;
-            desk.Name = deskIn.Name;
-            var success = await _deskRepository.Update(id, desk);
-            if (success)
-                return Ok(desk);
-
-            return NoContent();
+                desk.Description = deskIn.Description;
+                desk.Name = deskIn.Name;
+                var success = await _deskRepository.Update(id, desk);
+                if (success)
+                    return Ok(desk);
+                else
+                    return BadRequest(new { result = "fail", message = $"Unable to update Desk id:{id}" });
+            }
+            catch (System.Exception)
+            {
+                return BadRequest(new { result = "fail", message = "Invalid deskId!" });
+            }
         }
 
         /// <summary>
@@ -105,15 +120,22 @@ namespace API.DeskBookService.Web.Controllers
         [HttpDelete(APIRoutesV1.Desks.DeleteDeskAsync)]
         public async Task<IActionResult> DeleteDeskAsync([FromRoute] string id)
         {
-            var desk = await _deskRepository.Get(id);
-            if (desk == null)
-                return NotFound(new { result = "fail",message = $"Desk id:{id} not found" });
+            try
+            {
+                var desk = await _deskRepository.Get(id);
+                if (desk == null)
+                    return NotFound(new { result = "fail", message = $"Desk id:{id} not found" });
 
-            var success = await _deskRepository.Remove(desk.Id);
-            if (success)
-                return Ok(new { result="success",message = $"Desk id:{id} successfully deleted" });
-            else
-                return Ok(new { result = "fail", message = $"Booking exist. Unable to delete Desk id:{id}" });
+                var success = await _deskRepository.Remove(desk.Id);
+                if (success)
+                    return Ok(new { result = "success", message = $"Desk id:{id} successfully deleted" });
+                else
+                    return BadRequest(new { result = "fail", message = $"Booking exist. Unable to delete Desk id:{id}" });
+            }
+            catch (System.Exception)
+            {
+                return BadRequest(new { result = "fail", message = "Invalid deskId!" });
+            }
         }
     }
 }

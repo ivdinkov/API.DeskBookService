@@ -28,11 +28,31 @@ namespace API.DeskBookService.Data.Repository
 
         public async Task<DeskBookingResult> BookDesk(DeskBookingRequest deskBookingRequest)
         {
-            var bookings = await _deskBookings.Find(d => d.DeskId.Equals(deskBookingRequest.DeskId)).ToListAsync();
-            var isBooked = bookings.Where(s => s.Date.ToShortDateString() == deskBookingRequest.Date.ToShortDateString()).Any();
-
             var result = Create<DeskBookingResult>(deskBookingRequest);
-            if (!isBooked)
+            result.Code = DeskBookingResultCode.NoDeskAvailable;
+
+            try
+            {
+                var checkDeckId = _desks.Find(desk => desk.Id == deskBookingRequest.DeskId).Any();
+                if (!checkDeckId)
+                {
+                    result.Code = DeskBookingResultCode.InvalidDeskId;
+                    return result;
+                }
+            }
+            catch (System.FormatException)
+            {
+                result.Code = DeskBookingResultCode.InvalidDeskId;
+                return result;
+            }
+
+            var allBookings = await Get();
+            var filter = allBookings
+                .Where(s => s.Date.ToShortDateString() == deskBookingRequest.Date.ToShortDateString() 
+                    && s.DeskId.Contains(deskBookingRequest.DeskId))
+                .Any();
+
+            if (!filter)
             {
                 var deskBooking = Create<DeskBooking>(deskBookingRequest);
 
@@ -40,17 +60,23 @@ namespace API.DeskBookService.Data.Repository
 
                 result.DeskBookingId = deskBooking.Id;
                 result.Code = DeskBookingResultCode.Success;
+
+                return result;
             }
-            else
-            {
-                result.Code = DeskBookingResultCode.NoDeskAvailable;
-            }
+
             return result;
         }
 
         public async Task<DeskBooking> Get(string id)
         {
-            return await _deskBookings.Find<DeskBooking>(booking => booking.Id == id).FirstOrDefaultAsync();
+            try
+            {
+                return await _deskBookings.Find(booking => booking.Id == id).FirstOrDefaultAsync();
+            }
+            catch (System.FormatException)
+            {
+                throw;
+            }
         }
 
         public async Task<IEnumerable<DeskBooking>> Get()

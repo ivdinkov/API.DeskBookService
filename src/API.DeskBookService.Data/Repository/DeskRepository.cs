@@ -16,6 +16,7 @@ namespace API.DeskBookService.Data.Repository
             _desks = deskBookerContext.Desks;
             _bookings = deskBookerContext.DesksBooking;
         }
+
         public async Task<Desk> Save(Desk desk)
         {
             await _desks.InsertOneAsync(desk);
@@ -24,7 +25,14 @@ namespace API.DeskBookService.Data.Repository
 
         public async Task<Desk> Get(string id)
         {
-            return await _desks.Find<Desk>(desk => desk.Id == id).FirstOrDefaultAsync();
+            try
+            {
+                return await _desks.Find<Desk>(desk => desk.Id == id).FirstOrDefaultAsync();
+            }
+            catch (System.FormatException)
+            {
+                throw;
+            }            
         }
 
         public async Task<IEnumerable<Desk>> Get()

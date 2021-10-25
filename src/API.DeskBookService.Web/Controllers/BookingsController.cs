@@ -33,8 +33,6 @@ namespace API.DeskBookService.Web.Controllers
         public async Task<IActionResult> GetBookingsAsync()
         {
                 var deskBookings = await _bookingRepository.Get();
-                if (deskBookings == null)
-                    return NotFound(new { result = "fail",message = "No Bookings found" });
                 return Ok(deskBookings);
         }
 
@@ -47,11 +45,18 @@ namespace API.DeskBookService.Web.Controllers
         [HttpGet(APIRoutesV1.Bookings.GetBokingAsync)]
         public async Task<IActionResult> GetBookingAsync([FromRoute] string id)
         {
-            var deskBooking = await _bookingRepository.Get(id);
-            if (deskBooking == null)
-                return NotFound(new { result = "fail",message = $"Booking id:{id} not found" });
+            try
+            {
+                var deskBooking = await _bookingRepository.Get(id);
+                if (deskBooking == null)
+                    return NotFound(new { result = "fail", message = $"Booking id:{id} not found" });
 
-            return Ok(deskBooking);
+                return Ok(deskBooking);
+            }
+            catch (System.Exception)
+            {
+                return BadRequest(new { result = "fail", message = "Invalid bookingId!" });
+            }
         }
 
         /// <summary>
@@ -64,8 +69,18 @@ namespace API.DeskBookService.Web.Controllers
         [HttpPost(APIRoutesV1.Bookings.BookAsync)]
         public async Task<IActionResult> BookAsync([FromBody] DeskBookingRequest deskBookingRequest)
         {
-            var result = await _bookingRepository.BookDesk(deskBookingRequest);
-            return Ok(new { message = result.Code.ToString() });
+            var createdBooking = await _bookingRepository.BookDesk(deskBookingRequest);
+            if (createdBooking.Code.ToString() == "Success")
+            {
+                var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+                var locationUri = baseUrl + "/" + APIRoutesV1.Bookings.GetBokingAsync.Replace("{id:length(24)}", createdBooking.DeskBookingId);
+
+                return Created(locationUri, createdBooking);
+            }
+            else
+            {
+                return BadRequest(new { result = "fail",message=createdBooking.Code.ToString() });
+            }
         }
 
         /// <summary>
@@ -78,19 +93,27 @@ namespace API.DeskBookService.Web.Controllers
         [HttpPut(APIRoutesV1.Bookings.UpdateBokingAsync)]
         public async Task<IActionResult> UpdateBookingAsync([FromRoute] string id, [FromBody] DeskBookingUpdateRequest deskBookingIn)
         {
-            var deskBooking = await _bookingRepository.Get(id);
-            if (deskBooking == null)
-                return NotFound(new { result = "fail",message = $"Booking id:{id} not found" });
+            try
+            {
+                var deskBooking = await _bookingRepository.Get(id);
+                if (deskBooking == null)
+                    return NotFound(new { result = "fail", message = $"Booking id:{id} not found" });
 
-            deskBooking.FirstName = deskBookingIn.FirstName;
-            deskBooking.LastName = deskBookingIn.LastName;
-            deskBooking.Email = deskBookingIn.Email;
-            deskBooking.Message = deskBookingIn.Message;
-            var success = await _bookingRepository.Update(id, deskBooking);
-            if (success)
-                return Ok(deskBookingIn);
+                deskBooking.FirstName = deskBookingIn.FirstName;
+                deskBooking.LastName = deskBookingIn.LastName;
+                deskBooking.Email = deskBookingIn.Email;
+                deskBooking.Message = deskBookingIn.Message;
+                var success = await _bookingRepository.Update(id, deskBooking);
+                if (success)
+                    return Ok(deskBookingIn);
+                else
+                    return BadRequest(new { result = "fail", message = $"Unable to update Booking id:{id}" });
 
-            return NoContent();
+            }
+            catch (System.Exception)
+            {
+                return BadRequest(new { result = "fail", message = "Invalid bookingId!" });
+            }            
         }
 
         /// <summary>
@@ -101,15 +124,23 @@ namespace API.DeskBookService.Web.Controllers
         [HttpDelete(APIRoutesV1.Bookings.DeleteBokingAsync)]
         public async Task<IActionResult> DeleteBookingkAsync([FromRoute] string id)
         {
-            var deskBookingIn = await _bookingRepository.Get(id);
-            if (deskBookingIn == null)
-                return NotFound(new { message = $"Booking id:{id} not found" });
+            try
+            {
+                var deskBookingIn = await _bookingRepository.Get(id);
+                if (deskBookingIn == null)
+                    return NotFound(new { result = "fail", message = $"Booking id:{id} not found" });
 
-            var success = await _bookingRepository.Remove(deskBookingIn.Id);
-            if (success)
-                return Ok(new { result = "success",message =$"Booking id:{id} successfully deleted"});
+                var success = await _bookingRepository.Remove(deskBookingIn.Id);
+                if (success)
+                    return Ok(new { result = "success", message = $"Booking id:{id} successfully deleted" });
+                else
+                    return BadRequest(new { result = "fail", message = $"Unable to delete Booking id:{id}" });
 
-            return NoContent();
+            }
+            catch (System.Exception)
+            {
+                return BadRequest(new { result = "fail", message = "Invalid bookingId!" });
+            }
         }
 
    }

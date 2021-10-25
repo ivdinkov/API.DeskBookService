@@ -12,14 +12,14 @@ namespace API.DeskBookService.Core.DataInterfaces
         /// <summary>
         /// Save object
         /// </summary>
-        /// <param name="t">T as object</param>
+        /// <param name="t">The type of the obect</param>
         /// <returns></returns>
         Task<T> Save(T t);
 
         /// <summary>
         /// Get object
         /// </summary>
-        /// <param name="id">Id of the object</param>
+        /// <param name="id">Mongodb Id of the object</param>
         /// <returns></returns>
         Task<T> Get(string id);
 
@@ -32,15 +32,15 @@ namespace API.DeskBookService.Core.DataInterfaces
         /// <summary>
         /// Update object
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="t"></param>
+        /// <param name="id">Mongodb Id of the object</param>
+        /// <param name="t">T type of the object</param>
         /// <returns></returns>
         Task<bool> Update(string id, T t);
 
         /// <summary>
         /// Delete object
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Mongodb Id of the object</param>
         /// <returns></returns>
         Task<bool> Remove(string id);
     }
