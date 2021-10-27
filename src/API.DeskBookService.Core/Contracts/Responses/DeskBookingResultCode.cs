@@ -1,4 +1,4 @@
-﻿namespace API.DeskBookService.Core.Conracts.v1.Responses
+﻿namespace API.DeskBookService.Core.Conracts.Responses
 {
     /// <summary>
     /// DeskBooking result codes

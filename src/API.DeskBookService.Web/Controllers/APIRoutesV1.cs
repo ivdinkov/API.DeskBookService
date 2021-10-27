@@ -1,4 +1,4 @@
-﻿namespace API.DeskBookService.Core.Contracts.v1
+﻿namespace API.DeskBookService.Web.Controllers
 {
     /// <summary>
     /// Class containing routes for different API versions

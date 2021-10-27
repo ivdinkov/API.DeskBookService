@@ -1,6 +1,5 @@
-﻿using API.DeskBookService.Core.Conracts.v1.Requests;
-using API.DeskBookService.Core.Contracts.v1;
-using API.DeskBookService.Core.Contracts.v1.Requests;
+﻿using API.DeskBookService.Core.Conracts.Requests;
+using API.DeskBookService.Core.Contracts.Requests;
 using API.DeskBookService.Core.DataInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

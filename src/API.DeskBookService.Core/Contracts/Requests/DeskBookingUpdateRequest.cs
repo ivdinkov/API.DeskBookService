@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.DeskBookService.Core.Contracts.v1.Requests
+namespace API.DeskBookService.Core.Contracts.Requests
 {
     /// <summary>
     /// Desk update request

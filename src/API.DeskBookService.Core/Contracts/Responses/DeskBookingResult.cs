@@ -1,6 +1,6 @@
 ﻿using API.DeskBookService.Core.Domain;
 
-namespace API.DeskBookService.Core.Conracts.v1.Responses
+namespace API.DeskBookService.Core.Conracts.Responses
 {
     /// <summary>
     /// DeskBookingResult with result Code and DeskBookingId

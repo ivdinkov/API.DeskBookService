@@ -1,5 +1,4 @@
 ﻿using API.DeskBookService.Core.Contracts;
-using API.DeskBookService.Core.Contracts.v1;
 using API.DeskBookService.Core.DataInterfaces;
 using API.DeskBookService.Core.Domain;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,6 @@
 ﻿using API.DeskBookService.Core.Domain;
 
-namespace API.DeskBookService.Core.Conracts.v1.Requests
+namespace API.DeskBookService.Core.Conracts.Requests
 {
     /// <summary>
     /// DeskBookingRequest

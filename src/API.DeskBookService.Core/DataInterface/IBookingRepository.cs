@@ -1,5 +1,5 @@
-﻿using API.DeskBookService.Core.Conracts.v1.Requests;
-using API.DeskBookService.Core.Conracts.v1.Responses;
+﻿using API.DeskBookService.Core.Conracts.Requests;
+using API.DeskBookService.Core.Conracts.Responses;
 using API.DeskBookService.Core.Domain;
 using System.Threading.Tasks;
 
