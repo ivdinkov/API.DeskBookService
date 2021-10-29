@@ -52,10 +52,6 @@ namespace API.DeskBookService.Data.Repository
 
         public async Task<bool> Update(string id, Desk deskIn)
         {
-            var desk = Get(id);
-            if (desk == null)
-                return false;
-
             var result = await _desks.ReplaceOneAsync(d => d.Id == id, deskIn);
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }

@@ -8,20 +8,22 @@ namespace API.DeskBookService.Core.Services
 {
     public class DeskService : IDeskService
     {
-        private readonly IDeskRepository _repo;
+        private readonly IDeskRepository _deskRepo;
+        private readonly IBookingRepository _bookingRepo;
 
-        public DeskService(IDeskRepository deskRepository)
+        public DeskService(IDeskRepository deskRepository, IBookingRepository bookingRepository)
         {
-            _repo = deskRepository;
+            _deskRepo = deskRepository;
+            _bookingRepo = bookingRepository;
         }
         public async Task<Desk> Get(string id)
         {
-            return await _repo.Get(id);
+            return await _deskRepo.Get(id);
         }
 
         public async Task<IEnumerable<Desk>> GetAll()
         {
-            return await _repo.Get();
+            return await _deskRepo.Get();
         }
 
         public async Task<bool> Remove(string id)
@@ -30,12 +32,12 @@ namespace API.DeskBookService.Core.Services
             if (result == null)
                 return false;
 
-            return await _repo.Remove(id);
+            return await _deskRepo.Remove(id);
         }
 
         public async Task<Desk> Save(Desk desk)
         {
-            return await _repo.Save(desk);
+            return await _deskRepo.Save(desk);
         }
 
         public async Task<bool> Update(string id, DeskUpdateRequest deskIn)
@@ -47,7 +49,7 @@ namespace API.DeskBookService.Core.Services
             desk.Description = deskIn.Description;
             desk.Name = deskIn.Name;
 
-            return await _repo.Update(id,desk);
+            return await _deskRepo.Update(id,desk);
         }
     }
 }

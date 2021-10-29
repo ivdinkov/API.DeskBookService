@@ -48,7 +48,7 @@ namespace API.DeskBookService.Data.Repository
 
             var allBookings = await Get();
             var filter = allBookings
-                .Where(s => s.Date.ToShortDateString() == deskBookingRequest.Date.ToShortDateString() 
+                .Where(s => s.Date.ToShortDateString() == deskBookingRequest.Date.ToShortDateString()
                     && s.DeskId.Contains(deskBookingRequest.DeskId))
                 .Any();
 
@@ -75,7 +75,7 @@ namespace API.DeskBookService.Data.Repository
             }
             catch (System.FormatException)
             {
-                throw;
+                return null;
             }
         }
 
@@ -88,8 +88,8 @@ namespace API.DeskBookService.Data.Repository
         {
             var result = await _deskBookings.ReplaceOneAsync(desk => deskBooking.Id == id, deskBooking);
             return result.IsAcknowledged && result.ModifiedCount > 0;
-        }   
-        
+        }
+
         public async Task<bool> Remove(string id)
         {
             var result = await _deskBookings.DeleteOneAsync(desk => desk.Id == id);

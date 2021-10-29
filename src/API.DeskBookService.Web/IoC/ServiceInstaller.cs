@@ -10,7 +10,7 @@ namespace API.DeskBookService.Web.IoC
         public void InstallService(IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<IDeskService,DeskService>();
-            //services.AddSingleton<IBookingService,BookingService>();
+            services.AddSingleton<IBookingService,BookingService>();
         }
     }
 }
