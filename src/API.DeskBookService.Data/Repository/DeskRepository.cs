@@ -31,7 +31,7 @@ namespace API.DeskBookService.Data.Repository
             }
             catch (System.FormatException)
             {
-                throw;
+                return null;
             }            
         }
 
@@ -52,7 +52,11 @@ namespace API.DeskBookService.Data.Repository
 
         public async Task<bool> Update(string id, Desk deskIn)
         {
-            var result = await _desks.ReplaceOneAsync(desk => desk.Id == id, deskIn);
+            var desk = Get(id);
+            if (desk == null)
+                return false;
+
+            var result = await _desks.ReplaceOneAsync(d => d.Id == id, deskIn);
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
     }

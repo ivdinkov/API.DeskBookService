@@ -1,6 +1,7 @@
 ﻿using API.DeskBookService.Core.Contracts;
-using API.DeskBookService.Core.DataInterfaces;
+using API.DeskBookService.Core.Contracts.Requests;
 using API.DeskBookService.Core.Domain;
+using API.DeskBookService.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -12,15 +13,15 @@ namespace API.DeskBookService.Web.Controllers
     [ApiController]
     public class DesksController : Controller
     {
-        private IDeskRepository _deskRepository;
+        private IDeskService _deskService;
 
         /// <summary>
         /// Inject IDeskRepository
         /// </summary>
-        /// <param name="deskRepository"></param>
-        public DesksController(IDeskRepository deskRepository)
+        /// <param name="deskService"></param>
+        public DesksController(IDeskService deskService)
         {
-            _deskRepository = deskRepository;
+            _deskService = deskService;
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace API.DeskBookService.Web.Controllers
         [HttpGet(APIRoutesV1.Desks.GetDesksAsync)]
         public async Task<IActionResult> GetDesksAsync()
         {
-            var desks = await _deskRepository.Get();
+            var desks = await _deskService.GetAll();
             return Ok(desks);
         }
 
@@ -44,18 +45,11 @@ namespace API.DeskBookService.Web.Controllers
         [HttpGet(APIRoutesV1.Desks.GetDeskAsync)]
         public async Task<IActionResult> GetDeskAsync([FromRoute] string id)
         {
-            try
-            {
-                var desk = await _deskRepository.Get(id);
-                if (desk==null)
-                    return BadRequest(new { result = "fail", message = $"Desk id:{id} not found" }); 
+            var desk = await _deskService.Get(id);
+            if (desk==null)
+                return BadRequest(new { result = "fail", message = $"Desk id:{id} not found" }); 
 
-                return Ok(desk);
-            }
-            catch (System.Exception)
-            { 
-                return BadRequest(new { result = "fail", message = "Invalid deskId!" });
-            }        
+            return Ok(desk);
         }
 
         /// <summary>
@@ -69,7 +63,7 @@ namespace API.DeskBookService.Web.Controllers
         public async Task<IActionResult> SaveDeskAsync([FromBody] DeskSaveRequest newDesk)
         {
             Desk desk = new Desk { Name = newDesk.Name, Description = newDesk.Description };
-            var createdDesk = await _deskRepository.Save(desk);
+            var createdDesk = await _deskService.Save(desk);
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var locationUri = baseUrl + "/" + APIRoutesV1.Desks.GetDeskAsync.Replace("{id:length(24)}", createdDesk.Id);
@@ -85,26 +79,14 @@ namespace API.DeskBookService.Web.Controllers
         /// <returns>An ActionResult</returns>
         [Consumes("application/json")]
         [HttpPut(APIRoutesV1.Desks.UpdateDeskAsync)]
-        public async Task<IActionResult> UpdateDeskAsync([FromRoute] string id, [FromBody] DeskBase deskIn)
+        public async Task<IActionResult> UpdateDeskAsync([FromRoute] string id, [FromBody] DeskUpdateRequest deskIn)
         {
-            try
-            {
-                var desk = await _deskRepository.Get(id);
-                if (desk == null)
-                    return BadRequest(new { result = "fail", message = $"Desk id:{id} not found" });
+            var success = await _deskService.Update(id,deskIn);
 
-                desk.Description = deskIn.Description;
-                desk.Name = deskIn.Name;
-                var success = await _deskRepository.Update(id, desk);
-                if (success)
-                    return Ok(desk);
-                else
-                    return BadRequest(new { result = "fail", message = $"Unable to update Desk id:{id}" });
-            }
-            catch (System.Exception)
-            {
-                return BadRequest(new { result = "fail", message = "Invalid deskId!" });
-            }
+            if (success)
+                return Ok(new { result = "success", message = $"Desk id:{id} successfully updated" });
+            else
+                return BadRequest(new { result = "fail", message = $"Unable to update Desk id:{id}" });
         }
 
         /// <summary>
@@ -119,22 +101,12 @@ namespace API.DeskBookService.Web.Controllers
         [HttpDelete(APIRoutesV1.Desks.DeleteDeskAsync)]
         public async Task<IActionResult> DeleteDeskAsync([FromRoute] string id)
         {
-            try
-            {
-                var desk = await _deskRepository.Get(id);
-                if (desk == null)
-                    return NotFound(new { result = "fail", message = $"Desk id:{id} not found" });
+            var success = await _deskService.Remove(id);
 
-                var success = await _deskRepository.Remove(desk.Id);
-                if (success)
-                    return Ok(new { result = "success", message = $"Desk id:{id} successfully deleted" });
-                else
-                    return BadRequest(new { result = "fail", message = $"Booking exist. Unable to delete Desk id:{id}" });
-            }
-            catch (System.Exception)
-            {
-                return BadRequest(new { result = "fail", message = "Invalid deskId!" });
-            }
+            if (success)
+                return Ok(new { result = "success", message = $"Desk id:{id} successfully deleted" });
+            else
+                return BadRequest(new { result = "fail", message = $"Unable to delete Desk id:{id}" });
         }
     }
 }
