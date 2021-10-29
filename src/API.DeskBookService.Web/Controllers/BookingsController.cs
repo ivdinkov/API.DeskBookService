@@ -90,7 +90,6 @@ namespace API.DeskBookService.Web.Controllers
                 return Ok(deskBookingIn);
             else
                 return BadRequest(new { result = "fail", message = $"Unable to update Booking id:{id}" });
-
         }
 
         /// <summary>
@@ -107,6 +106,5 @@ namespace API.DeskBookService.Web.Controllers
             else
                 return BadRequest(new { result = "fail", message = $"Unable to delete Booking id:{id}" });
         }
-
    }
 }

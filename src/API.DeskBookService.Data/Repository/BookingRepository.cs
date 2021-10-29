@@ -9,23 +9,40 @@ using System.Threading.Tasks;
 
 namespace API.DeskBookService.Data.Repository
 {
+    /// <summary>
+    /// Booking repository
+    /// </summary>
     public class BookingRepository : IBookingRepository
     {
         private IMongoCollection<DeskBooking> _deskBookings;
         private IMongoCollection<Desk> _desks;
 
+        /// <summary>
+        /// Booking repository
+        /// </summary>
+        /// <param name="deskBookerContext">Injects IDeskBookerDataContext</param>
         public BookingRepository(IDeskBookerDataContext deskBookerContext)
         {
             _deskBookings = deskBookerContext.DesksBooking;
             _desks = deskBookerContext.Desks;
         }
 
+        /// <summary>
+        /// Save new booking
+        /// </summary>
+        /// <param name="deskBooking">DeskBooking object</param>
+        /// <returns>Returns DeskBooking object</returns>
         public async Task<DeskBooking> Save(DeskBooking deskBooking)
         {
             await _deskBookings.InsertOneAsync(deskBooking);
             return deskBooking;
         }
 
+        /// <summary>
+        /// Book a Desk
+        /// </summary>
+        /// <param name="deskBookingRequest">DeskBookingRequest object</param>
+        /// <returns>Returns DeskBookingResult object</returns>
         public async Task<DeskBookingResult> BookDesk(DeskBookingRequest deskBookingRequest)
         {
             var result = Create<DeskBookingResult>(deskBookingRequest);
@@ -67,6 +84,11 @@ namespace API.DeskBookService.Data.Repository
             return result;
         }
 
+        /// <summary>
+        /// Get Booking by Id
+        /// </summary>
+        /// <param name="id">The Id of the booking</param>
+        /// <returns>Returns DeskBooking object</returns>
         public async Task<DeskBooking> Get(string id)
         {
             try
@@ -79,23 +101,44 @@ namespace API.DeskBookService.Data.Repository
             }
         }
 
+        /// <summary> 
+        /// Get all Bookings
+        /// </summary>
+        /// <returns>Returns a list of all Bookings objects</returns>
         public async Task<IEnumerable<DeskBooking>> Get()
         {
             return await _deskBookings.Find(_ => true).ToListAsync();
         }
 
+        /// <summary>
+        /// Update Booking by Id
+        /// </summary>
+        /// <param name="id">DeskBooking id</param>
+        /// <param name="deskBooking">DeskBooking object</param>
+        /// <returns>True or False result</returns>
         public async Task<bool> Update(string id, DeskBooking deskBooking)
         {
             var result = await _deskBookings.ReplaceOneAsync(desk => deskBooking.Id == id, deskBooking);
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
+        /// <summary>
+        /// Deletes Bookings object
+        /// </summary>
+        /// <param name="id">Booking Id</param>
+        /// <returns>True or False result</returns>
         public async Task<bool> Remove(string id)
         {
             var result = await _deskBookings.DeleteOneAsync(desk => desk.Id == id);
             return result.IsAcknowledged && result.DeletedCount > 0;
         }
 
+        /// <summary>
+        /// Generic class
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="request"></param>
+        /// <returns></returns>
         private static T Create<T>(DeskBookingRequest request) where T : DeskBookingBase, new()
         {
             return new T

@@ -16,7 +16,7 @@ namespace API.DeskBookService.Web.Controllers
         private IDeskService _deskService;
 
         /// <summary>
-        /// Inject IDeskRepository
+        /// Injects IDeskRepository
         /// </summary>
         /// <param name="deskService"></param>
         public DesksController(IDeskService deskService)
