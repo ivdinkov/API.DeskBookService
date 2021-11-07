@@ -18,7 +18,7 @@
             /// <summary>
             /// Get desk by Id
             /// </summary>
-            public const string GetDeskAsync = "api/v1/desks/{id:length(24)}";
+            public const string GetDeskAsync = "api/v1/desks/{id}";
 
             /// <summary>
             /// Post new desk
@@ -28,12 +28,12 @@
             /// <summary>
             /// Update desk
             /// </summary>
-            public const string UpdateDeskAsync = "api/v1/desks/{id:length(24)}";
+            public const string UpdateDeskAsync = "api/v1/desks/{id}";
 
             /// <summary>
             /// Delete desk by Id
             /// </summary>
-            public const string DeleteDeskAsync = "api/v1/desks/{id:length(24)}";
+            public const string DeleteDeskAsync = "api/v1/desks/{id}";
         }
 
         /// <summary>
@@ -49,7 +49,7 @@
             /// <summary>
             /// Get desk by Id
             /// </summary>
-            public const string GetBokingAsync = "api/v1/bookings/{id:length(24)}";
+            public const string GetBokingAsync = "api/v1/bookings/{id}";
 
             /// <summary>
             /// Post new desk
@@ -59,12 +59,12 @@
             /// <summary>
             /// Update desk
             /// </summary>
-            public const string UpdateBokingAsync = "api/v1/bookings/{id:length(24)}";
+            public const string UpdateBokingAsync = "api/v1/bookings/{id}";
 
             /// <summary>
             /// Delete desk by Id
             /// </summary>
-            public const string DeleteBokingAsync = "api/v1/bookings/{id:length(24)}";
+            public const string DeleteBokingAsync = "api/v1/bookings/{id}";
         }
     }
 }

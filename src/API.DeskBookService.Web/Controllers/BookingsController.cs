@@ -1,6 +1,9 @@
 ﻿using API.DeskBookService.Core.Conracts.Requests;
 using API.DeskBookService.Core.Contracts.Requests;
+using API.DeskBookService.Core.Contracts.Responses;
+using API.DeskBookService.Core.Domain;
 using API.DeskBookService.Core.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -41,12 +44,14 @@ namespace API.DeskBookService.Web.Controllers
         /// <param name="id">The ID of the booking you want to get</param>
         /// <returns>Return the requested DeskBooking onject</returns>
         [Produces("application/json")]
+        [ProducesResponseType(typeof(DeskBooking), 200)]
+        [ProducesResponseType(typeof(Response), 404)]
         [HttpGet(APIRoutesV1.Bookings.GetBokingAsync)]
         public async Task<IActionResult> GetBookingAsync([FromRoute] string id)
         {
             var deskBooking = await _bookingService.Get(id);
             if (deskBooking == null)
-                return NotFound(new { result = "fail", message = $"Booking id:{id} not found" });
+                return NotFound(new Response { Code = ResponseCode.Error.ToString(), Message = $"Booking id:{id} not found" });
 
             return Ok(deskBooking);
         }
@@ -58,6 +63,8 @@ namespace API.DeskBookService.Web.Controllers
         /// <returns>Return booking result</returns>
         [Consumes("application/json")]
         [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Response),400)]
         [HttpPost(APIRoutesV1.Bookings.BookAsync)]
         public async Task<IActionResult> BookAsync([FromBody] DeskBookingRequest deskBookingRequest)
         {
@@ -65,14 +72,12 @@ namespace API.DeskBookService.Web.Controllers
             if (createdBooking.Code.ToString() == "Success")
             {
                 var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-                var locationUri = baseUrl + "/" + APIRoutesV1.Bookings.GetBokingAsync.Replace("{id:length(24)}", createdBooking.DeskBookingId);
+                var locationUri = baseUrl + "/" + APIRoutesV1.Bookings.GetBokingAsync.Replace("{id}", createdBooking.DeskBookingId);
 
                 return Created(locationUri, createdBooking);
             }
-            else
-            {
-                return BadRequest(new { result = "fail",message=createdBooking.Code.ToString() });
-            }
+
+            return BadRequest(new Response { Code = ResponseCode.Error.ToString(), Message = createdBooking.Code.ToString() });
         }
 
         /// <summary>
@@ -82,14 +87,17 @@ namespace API.DeskBookService.Web.Controllers
         /// <param name="deskBookingIn">Booking with new info</param>
         /// <returns>An ActionResult</returns>
         [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(Response), 200)]
+        [ProducesResponseType(typeof(Response), 400)]
         [HttpPut(APIRoutesV1.Bookings.UpdateBokingAsync)]
         public async Task<IActionResult> UpdateBookingAsync([FromRoute] string id, [FromBody] DeskBookingUpdateRequest deskBookingIn)
         {
             var success = await _bookingService.Update(id, deskBookingIn);
             if (success)
-                return Ok(deskBookingIn);
-            else
-                return BadRequest(new { result = "fail", message = $"Unable to update Booking id:{id}" });
+                return Ok(new Response { Code = ResponseCode.Success.ToString(), Message = $"Booking id:{id} successfully updated" });
+
+            return BadRequest(new Response { Code = ResponseCode.Error.ToString(), Message = $"Unable to update Booking id:{id}" });
         }
 
         /// <summary>
@@ -97,14 +105,17 @@ namespace API.DeskBookService.Web.Controllers
         /// </summary>
         /// <param name="id">The ID of the booking you want to delete</param>
         /// <returns>An ActionResult</returns>
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(Response), 200)]
+        [ProducesResponseType(typeof(Response), 400)]
         [HttpDelete(APIRoutesV1.Bookings.DeleteBokingAsync)]
         public async Task<IActionResult> DeleteBookingkAsync([FromRoute] string id)
         {
             var success = await _bookingService.Remove(id);
             if (success)
                 return Ok(new { result = "success", message = $"Booking id:{id} successfully deleted" });
-            else
-                return BadRequest(new { result = "fail", message = $"Unable to delete Booking id:{id}" });
+
+            return BadRequest(new Response { Code = ResponseCode.Error.ToString(), Message = $"Unable to delete Booking id:{id}" });
         }
    }
 }
