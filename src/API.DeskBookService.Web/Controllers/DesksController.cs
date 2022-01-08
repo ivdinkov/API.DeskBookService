@@ -51,10 +51,10 @@ namespace API.DeskBookService.Web.Controllers
         public async Task<IActionResult> GetDeskAsync([FromRoute] string id)
         {
             var desk = await _deskService.Get(id);
-            if (desk == null)
-                return NotFound(new Response { Code = ResponseCode.Error.ToString(), Message = $"Desk id:{id} not found" });
+            if (desk != null)
+                return Ok(desk);
 
-            return Ok(desk);
+            return NotFound(new Response { Code = ResponseCode.Error.ToString(), Message = $"Desk id:{id} not found" });
         }
 
         /// <summary>

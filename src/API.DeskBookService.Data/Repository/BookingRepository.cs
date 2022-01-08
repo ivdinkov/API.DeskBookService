@@ -48,6 +48,9 @@ namespace API.DeskBookService.Data.Repository
             var result = Create<DeskBookingResult>(deskBookingRequest);
             result.Code = DeskBookingResultCode.NoDeskAvailable;
 
+            if(deskBookingRequest.Date < System.DateTime.Now)
+                return result;    
+
             try
             {
                 var checkDeckId = _desks.Find(desk => desk.Id == deskBookingRequest.DeskId).Any();
@@ -147,7 +150,8 @@ namespace API.DeskBookService.Data.Repository
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
-                Date = request.Date,
+                Message = request.Message,
+                Date = request.Date
             };
         }
     }

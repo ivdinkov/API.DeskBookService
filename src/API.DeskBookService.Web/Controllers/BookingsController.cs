@@ -1,4 +1,5 @@
 ﻿using API.DeskBookService.Core.Conracts.Requests;
+using API.DeskBookService.Core.Conracts.Responses;
 using API.DeskBookService.Core.Contracts.Requests;
 using API.DeskBookService.Core.Contracts.Responses;
 using API.DeskBookService.Core.Domain;
@@ -50,10 +51,10 @@ namespace API.DeskBookService.Web.Controllers
         public async Task<IActionResult> GetBookingAsync([FromRoute] string id)
         {
             var deskBooking = await _bookingService.Get(id);
-            if (deskBooking == null)
-                return NotFound(new Response { Code = ResponseCode.Error.ToString(), Message = $"Booking id:{id} not found" });
+            if (deskBooking != null)
+                return Ok(deskBooking);
 
-            return Ok(deskBooking);
+            return NotFound(new Response { Code = ResponseCode.Error.ToString(), Message = $"Booking id:{id} not found" });
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace API.DeskBookService.Web.Controllers
         /// <returns>Return booking result</returns>
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(DeskBookingResult),201)]
         [ProducesResponseType(typeof(Response),400)]
         [HttpPost(APIRoutesV1.Bookings.BookAsync)]
         public async Task<IActionResult> BookAsync([FromBody] DeskBookingRequest deskBookingRequest)
@@ -113,7 +114,7 @@ namespace API.DeskBookService.Web.Controllers
         {
             var success = await _bookingService.Remove(id);
             if (success)
-                return Ok(new { result = "success", message = $"Booking id:{id} successfully deleted" });
+                return Ok(new Response { Code = ResponseCode.Success.ToString(), Message = $"Booking id:{id} successfully deleted" });
 
             return BadRequest(new Response { Code = ResponseCode.Error.ToString(), Message = $"Unable to delete Booking id:{id}" });
         }
