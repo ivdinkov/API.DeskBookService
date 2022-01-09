@@ -1,21 +1,29 @@
 ﻿using API.DeskBookService.Core.DataInterfaces;
-using API.DeskBookService.Core.Domain;
+using API.DeskBookService.Data.DataSettings;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace API.DeskBookService.Data.Context
 {
-    public class DeskBookerDataContext : IDeskBookerDataContext
+    public class DeskBookerDataContext : IDeskBookerDBContext
     {
-        public DeskBookerDataContext(IDeskDatabaseSettings settings)
-        {
-            var _mongoClient = new MongoClient(settings.ConnectionString);
-            var _db = _mongoClient.GetDatabase(settings.DatabaseName);
+        private IMongoDatabase _db { get; set; }
+        private MongoClient _mongoClient { get; set; }
+        public IClientSessionHandle Session { get; set; }
 
-            Desks = _db.GetCollection<Desk>("Desk");
-            DesksBooking = _db.GetCollection<DeskBooking>("DeskBooking");
+        public DeskBookerDataContext(IOptions<DeskDatabaseSettings> settings)
+        {
+            _mongoClient = new MongoClient(settings.Value.ConnectionString);
+            _db = _mongoClient.GetDatabase(settings.Value.DatabaseName);
         }
 
-        public IMongoCollection<Desk> Desks { get; private set; }
-        public IMongoCollection<DeskBooking> DesksBooking { get; private set; }
+        public IMongoCollection<T> GetCollection<T>(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
+            return _db.GetCollection<T>(name);
+        }
     }
 }
