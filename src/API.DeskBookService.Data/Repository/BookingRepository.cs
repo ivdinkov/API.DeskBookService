@@ -3,6 +3,7 @@ using API.DeskBookService.Core.Conracts.Responses;
 using API.DeskBookService.Core.DataInterfaces;
 using API.DeskBookService.Core.Domain;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,10 +22,10 @@ namespace API.DeskBookService.Data.Repository
         /// Booking repository
         /// </summary>
         /// <param name="deskBookerContext">Injects IDeskBookerDataContext</param>
-        public BookingRepository(IDeskBookerDataContext deskBookerContext)
+        public BookingRepository(IDeskBookerDBContext deskBookerDBContext)
         {
-            _deskBookings = deskBookerContext.DesksBooking;
-            _desks = deskBookerContext.Desks;
+            _desks = deskBookerDBContext.GetCollection<Desk>(Collections.Desk.ToString());
+            _deskBookings = deskBookerDBContext.GetCollection<DeskBooking>(Collections.DeskBooking.ToString());
         }
 
         /// <summary>
@@ -48,9 +49,6 @@ namespace API.DeskBookService.Data.Repository
             var result = Create<DeskBookingResult>(deskBookingRequest);
             result.Code = DeskBookingResultCode.NoDeskAvailable;
 
-            if(deskBookingRequest.Date < System.DateTime.Now)
-                return result;    
-
             try
             {
                 var checkDeckId = _desks.Find(desk => desk.Id == deskBookingRequest.DeskId).Any();
@@ -72,7 +70,7 @@ namespace API.DeskBookService.Data.Repository
                     && s.DeskId.Contains(deskBookingRequest.DeskId))
                 .Any();
 
-            if (!filter)
+            if (!filter && !(DateTime.Compare(deskBookingRequest.Date, DateTime.Now) < 0))
             {
                 var deskBooking = Create<DeskBooking>(deskBookingRequest);
 

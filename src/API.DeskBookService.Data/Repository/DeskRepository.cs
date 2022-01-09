@@ -12,16 +12,16 @@ namespace API.DeskBookService.Data.Repository
     public class DeskRepository : IDeskRepository
     {
         private IMongoCollection<Desk> _desks;
-        private IMongoCollection<DeskBooking> _bookings;
+        private IMongoCollection<DeskBooking> _deskBookings;
 
         /// <summary>
         /// Desk repo constructor
         /// </summary>
         /// <param name="deskBookerContext">Injects IDeskBookerDataContext</param>
-        public DeskRepository(IDeskBookerDataContext deskBookerContext)
+        public DeskRepository(IDeskBookerDBContext deskBookerDBContext)
         {
-            _desks = deskBookerContext.Desks;
-            _bookings = deskBookerContext.DesksBooking;
+            _desks = deskBookerDBContext.GetCollection<Desk>(Collections.Desk.ToString());
+            _deskBookings = deskBookerDBContext.GetCollection<DeskBooking>(Collections.DeskBooking.ToString());
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace API.DeskBookService.Data.Repository
         /// <returns>True or False result</returns>
         public async Task<bool> Remove(string id)
         {
-            var booking = await _bookings.Find(b => b.DeskId == id).AnyAsync();
+            var booking = await _deskBookings.Find(b => b.DeskId == id).AnyAsync();
             if (booking)
                 return false;
 
