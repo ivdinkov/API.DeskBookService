@@ -20,8 +20,8 @@ namespace API.DeskBookService.Data.Repository
         /// <param name="deskBookerContext">Injects IDeskBookerDataContext</param>
         public DeskRepository(IDeskBookerDBContext deskBookerDBContext)
         {
-            _desks = deskBookerDBContext.GetCollection<Desk>(Collections.Desk.ToString());
-            _deskBookings = deskBookerDBContext.GetCollection<DeskBooking>(Collections.DeskBooking.ToString());
+            _desks = deskBookerDBContext.GetCollection<Desk>(typeof(Desk).Name);
+            _deskBookings = deskBookerDBContext.GetCollection<DeskBooking>(typeof(DeskBooking).Name);
         }
 
         /// <summary>

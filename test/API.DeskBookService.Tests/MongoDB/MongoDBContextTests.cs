@@ -1,7 +1,6 @@
 ﻿using API.DeskBookService.Core.Domain;
 using API.DeskBookService.Data.Context;
 using API.DeskBookService.Data.DataSettings;
-using API.DeskBookService.Data.Repository;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -75,8 +74,8 @@ namespace API.DeskBookService.Tests.MongoDB
 
             //Act 
             var context = new DeskBookerDataContext(_mockOptions.Object);
-            var deskCollection = context.GetCollection<Desk>(Collections.Desk.ToString());
-            var bookingCollection = context.GetCollection<DeskBooking>(Collections.DeskBooking.ToString());
+            var deskCollection = context.GetCollection<Desk>(typeof(Desk).Name);
+            var bookingCollection = context.GetCollection<DeskBooking>(typeof(DeskBooking).Name);
 
             //Assert 
             //deskCollection.Should().BeOfType<IMongoCollection<Desk>>();
