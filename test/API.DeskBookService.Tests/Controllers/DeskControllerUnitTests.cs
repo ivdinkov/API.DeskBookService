@@ -4,6 +4,7 @@ using API.DeskBookService.Core.Domain;
 using API.DeskBookService.Core.Services;
 using API.DeskBookService.Web.Controllers;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
@@ -17,6 +18,9 @@ namespace API.DeskBookService.Tests.Controllers
     {
         private Mock<IDeskService> _mockService;
         private List<Desk> _deskList;
+        private Mock<HttpContext> _mockContext;
+        private Mock<IHttpContextAccessor> _mockContextAccessor;
+        private Mock<HttpRequest> _httpRequest;
 
         public DeskControllerUnitTests()
         {
@@ -26,13 +30,20 @@ namespace API.DeskBookService.Tests.Controllers
                 new Desk{ Id="617542f3a04d6f73f239a706",Name="Desk 2",Description="New desk"},
                 new Desk{ Id="617542f3a04d6f73f239a777",Name="Desk 3",Description="Another new desk"}
             };
+            _httpRequest = new Mock<HttpRequest>();
+            _httpRequest.Setup(r => r.Scheme).Returns("https");
+            _httpRequest.Setup(r => r.Host).Returns(new HostString("localhost"));
+            _mockContext = new Mock<HttpContext>();
+            _mockContext.Setup(r => r.Request).Returns(_httpRequest.Object);
+            _mockContextAccessor = new Mock<IHttpContextAccessor>();
+            _mockContextAccessor.Setup(mock => mock.HttpContext).Returns(_mockContext.Object);
         }
 
         [Fact]
         public async Task GetAllDesks_ShouldReturnAllDesks()
         {
             _mockService.Setup(s => s.GetAll()).ReturnsAsync(_deskList.Select(x => x));
-            var _controller = new DesksController(_mockService.Object);
+            var _controller = new DesksController(_mockService.Object, _mockContextAccessor.Object);
 
             //Act
             var result = await _controller.GetDesksAsync();
@@ -50,7 +61,7 @@ namespace API.DeskBookService.Tests.Controllers
             var _deskId = "617488496c2be155553d0763";
             _mockService.Setup(repo => repo.Get(It.IsAny<string>())).ReturnsAsync((string i) =>
                 _deskList.SingleOrDefault(x => x.Id == i));
-            var _controller = new DesksController(_mockService.Object);
+            var _controller = new DesksController(_mockService.Object, _mockContextAccessor.Object);
 
             //Act
             var result = await _controller.GetDeskAsync(_deskId);
@@ -68,7 +79,7 @@ namespace API.DeskBookService.Tests.Controllers
             var _deskId = "1";
             _mockService.Setup(repo => repo.Get(It.IsAny<string>())).ReturnsAsync((string i) =>
                 _deskList.SingleOrDefault(x => x.Id == i));
-            var _controller = new DesksController(_mockService.Object);
+            var _controller = new DesksController(_mockService.Object, _mockContextAccessor.Object);
 
             //Act
             var result = await _controller.GetDeskAsync(_deskId);
@@ -94,7 +105,7 @@ namespace API.DeskBookService.Tests.Controllers
             };
 
             _mockService.Setup(repo => repo.Save(It.IsAny<Desk>())).ReturnsAsync(_desk);
-            var _controller = new DesksController(_mockService.Object);
+            var _controller = new DesksController(_mockService.Object, _mockContextAccessor.Object);
 
             //Act
             var result = await _controller.SaveDeskAsync(_desk2);
@@ -117,7 +128,7 @@ namespace API.DeskBookService.Tests.Controllers
             };
 
             _mockService.Setup(repo => repo.Update(It.IsAny<string>(), _deskIn)).ReturnsAsync(true);
-            var _controller = new DesksController(_mockService.Object);
+            var _controller = new DesksController(_mockService.Object, _mockContextAccessor.Object);
 
             //Act
             var result = await _controller.UpdateDeskAsync(_deskId, _deskIn);
@@ -138,7 +149,7 @@ namespace API.DeskBookService.Tests.Controllers
             };
 
             _mockService.Setup(repo => repo.Update(It.IsAny<string>(), _deskIn)).ReturnsAsync(false);
-            var _controller = new DesksController(_mockService.Object);
+            var _controller = new DesksController(_mockService.Object, _mockContextAccessor.Object);
 
             //Act
             var result = await _controller.UpdateDeskAsync(_deskId, _deskIn);
@@ -155,7 +166,7 @@ namespace API.DeskBookService.Tests.Controllers
             var _deskId = "617488496c2be155553d0763";
             _mockService.Setup(repo => repo.Remove(It.IsAny<string>()))
                 .ReturnsAsync(_deskList.RemoveAll(r => r.Id.Equals(_deskId)) == 1);
-            var _controller = new DesksController(_mockService.Object);
+            var _controller = new DesksController(_mockService.Object, _mockContextAccessor.Object);
 
             //Act
             var result = await _controller.DeleteDeskAsync(_deskId);
@@ -172,7 +183,7 @@ namespace API.DeskBookService.Tests.Controllers
             var _deskId = "1";
             _mockService.Setup(repo => repo.Remove(It.IsAny<string>()))
                 .ReturnsAsync(_deskList.RemoveAll(r => r.Id.Equals(_deskId)) == 1);
-            var _controller = new DesksController(_mockService.Object);
+            var _controller = new DesksController(_mockService.Object, _mockContextAccessor.Object);
 
             //Act
             var result = await _controller.DeleteDeskAsync(_deskId);

@@ -16,14 +16,16 @@ namespace API.DeskBookService.Web.Controllers
     public class DesksController : Controller
     {
         private IDeskService _deskService;
+        private IHttpContextAccessor _httpContextAccessor;
 
         /// <summary>
         /// Injects IDeskRepository
         /// </summary>
         /// <param name="deskService"></param>
-        public DesksController(IDeskService deskService)
+        public DesksController(IDeskService deskService, IHttpContextAccessor httpContextAccessor)
         {
             _deskService = deskService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -71,7 +73,7 @@ namespace API.DeskBookService.Web.Controllers
             Desk desk = new Desk { Name = newDesk.Name, Description = newDesk.Description };
             var createdDesk = await _deskService.Save(desk);
 
-            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.ToUriComponent()}";
             var locationUri = baseUrl + "/" + APIRoutesV1.Desks.GetDeskAsync.Replace("{id}", createdDesk.Id);
 
             return Created(locationUri, createdDesk);

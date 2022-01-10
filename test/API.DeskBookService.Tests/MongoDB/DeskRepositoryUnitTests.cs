@@ -1,4 +1,5 @@
-﻿using API.DeskBookService.Core.Domain;
+﻿using API.DeskBookService.Core.DataInterfaces;
+using API.DeskBookService.Core.Domain;
 using API.DeskBookService.Data.Context;
 using API.DeskBookService.Data.Repository;
 using MongoDB.Driver;
@@ -12,7 +13,7 @@ namespace API.DeskBookService.Tests.MongoDB
     public class DeskRepositoryUnitTests
     {
         private Mock<IMongoCollection<Desk>> _mockCollection;
-        private Mock<DeskBookerDataContext> _mockContext;
+        private Mock<IDeskBookerDBContext> _mockContext;
         private Desk _desk;
 
         public DeskRepositoryUnitTests()
@@ -24,7 +25,7 @@ namespace API.DeskBookService.Tests.MongoDB
             };
 
             _mockCollection = new Mock<IMongoCollection<Desk>>();
-            _mockContext = new Mock<DeskBookerDataContext>();
+            _mockContext = new Mock<IDeskBookerDBContext>();
         }
 
         [Fact]
