@@ -1,5 +1,6 @@
 ﻿using API.DeskBookService.Core.Contracts;
 using API.DeskBookService.Core.Contracts.Requests;
+using API.DeskBookService.Core.Contracts.Responses;
 using API.DeskBookService.Core.Domain;
 using API.DeskBookService.Core.Services;
 using API.DeskBookService.Web.Controllers;
@@ -85,8 +86,10 @@ namespace API.DeskBookService.Tests.Controllers
             var result = await _controller.GetDeskAsync(_deskId);
 
             //Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-            //result.Should().BeOfType<Response>();
+            var resultBad = result.Should().BeOfType<NotFoundObjectResult>().Subject;
+            var response = resultBad.Value.Should().BeOfType<Response>().Subject;
+            resultBad.Value.Should().BeOfType<Response>();
+            response.Code.Should().Be("Error");
         }
 
         [Fact]
@@ -111,9 +114,10 @@ namespace API.DeskBookService.Tests.Controllers
             var result = await _controller.SaveDeskAsync(_desk2);
 
             //Assert
-            result.Should().BeOfType<CreatedResult>();
-            //result.Should().BeOfType<Response>();
-
+            var resultOk = result.Should().BeOfType<CreatedResult>().Subject;
+            var desk = resultOk.Value.Should().BeOfType<Desk>().Subject;
+            desk.Name.Should().Be(_desk2.Name);
+            desk.Description.Should().Be(_desk2.Description);
         }
 
         [Fact]
@@ -134,7 +138,10 @@ namespace API.DeskBookService.Tests.Controllers
             var result = await _controller.UpdateDeskAsync(_deskId, _deskIn);
 
             //Assert
-            result.Should().BeOfType<OkObjectResult>();
+            var resultOk = result.Should().BeOfType<OkObjectResult>().Subject;
+            var response = resultOk.Value.Should().BeOfType<Response>().Subject;
+            resultOk.Value.Should().BeOfType<Response>();
+            response.Code.Should().Be("Success");
         }
 
         [Fact]
@@ -156,7 +163,10 @@ namespace API.DeskBookService.Tests.Controllers
 
             //Assert
             result.Should().BeOfType<BadRequestObjectResult>();
-            //result.Should().BeOfType<Response>();
+            var resultBad = result.Should().BeOfType<BadRequestObjectResult>().Subject;
+            var response = resultBad.Value.Should().BeOfType<Response>().Subject;
+            resultBad.Value.Should().BeOfType<Response>();
+            response.Code.Should().Be("Error");
         }
 
         [Fact]
@@ -173,7 +183,10 @@ namespace API.DeskBookService.Tests.Controllers
 
             //Assert
             result.Should().BeOfType<OkObjectResult>();
-            //result.Should().BeOfType<Response>();
+            var resultOk = result.Should().BeOfType<OkObjectResult>().Subject;
+            var response = resultOk.Value.Should().BeOfType<Response>().Subject;
+            resultOk.Value.Should().BeOfType<Response>();
+            response.Code.Should().Be("Success");
         }
 
         [Fact]
@@ -190,8 +203,10 @@ namespace API.DeskBookService.Tests.Controllers
 
             //Assert
             result.Should().BeOfType<BadRequestObjectResult>();
-            //result.Should().BeOfType<Response>();
+            var resultBad = result.Should().BeOfType<BadRequestObjectResult>().Subject;
+            var response = resultBad.Value.Should().BeOfType<Response>().Subject;
+            resultBad.Value.Should().BeOfType<Response>();
+            response.Code.Should().Be("Error");
         }
-
     }
 }
