@@ -35,7 +35,7 @@ namespace API.DeskBookService.Tests.MongoDB
             _mockClient.Setup(c => c.GetDatabase(_mockOptions.Object.Value.DatabaseName, null)).Returns(_mockDB.Object);
 
             //Act 
-            var context = new DeskBookerDataContext(_mockOptions.Object);
+            var context = new DeskBookerDBContext(_mockOptions.Object);
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace API.DeskBookService.Tests.MongoDB
             _mockClient.Setup(c => c.GetDatabase(_mockOptions.Object.Value.DatabaseName, null)).Returns(_mockDB.Object);
 
             //Act 
-            var context = new DeskBookerDataContext(_mockOptions.Object);
+            var context = new DeskBookerDBContext(_mockOptions.Object);
             var deskCollection = context.GetCollection<Desk>("");
             var bookingCollection = context.GetCollection<DeskBooking>("");
 
@@ -73,7 +73,7 @@ namespace API.DeskBookService.Tests.MongoDB
             _mockClient.Setup(c => c.GetDatabase(_mockOptions.Object.Value.DatabaseName, null)).Returns(_mockDB.Object);
 
             //Act 
-            var context = new DeskBookerDataContext(_mockOptions.Object);
+            var context = new DeskBookerDBContext(_mockOptions.Object);
             var deskCollection = context.GetCollection<Desk>(typeof(Desk).Name);
             var bookingCollection = context.GetCollection<DeskBooking>(typeof(DeskBooking).Name);
 

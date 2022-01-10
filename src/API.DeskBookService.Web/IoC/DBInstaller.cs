@@ -16,7 +16,7 @@ namespace API.DeskBookService.Web.IoC
             configuration.GetSection(nameof(DeskDatabaseSettings)));
                     services.AddSingleton<IDeskDatabaseSettings>(sp =>
                         sp.GetRequiredService<IOptions<DeskDatabaseSettings>>().Value);
-                    services.AddTransient<IDeskBookerDBContext, DeskBookerDataContext>();
+                    services.AddTransient<IDeskBookerDBContext, DeskBookerDBContext>();
         }
 
 
