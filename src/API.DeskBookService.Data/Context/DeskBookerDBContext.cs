@@ -5,13 +5,13 @@ using MongoDB.Driver;
 
 namespace API.DeskBookService.Data.Context
 {
-    public class DeskBookerDataContext : IDeskBookerDBContext
+    public class DeskBookerDBContext : IDeskBookerDBContext
     {
         private IMongoDatabase _db { get; set; }
         private MongoClient _mongoClient { get; set; }
         public IClientSessionHandle Session { get; set; }
 
-        public DeskBookerDataContext(IOptions<DeskDatabaseSettings> settings)
+        public DeskBookerDBContext(IOptions<DeskDatabaseSettings> settings)
         {
             _mongoClient = new MongoClient(settings.Value.ConnectionString);
             _db = _mongoClient.GetDatabase(settings.Value.DatabaseName);
