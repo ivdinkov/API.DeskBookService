@@ -51,7 +51,7 @@ namespace API.DeskBookService.Core.Services
         /// <returns>True or False result</returns>
         public async Task<bool> Remove(string id)
         {
-            var result = Get(id);
+            var result = await Get(id);
             if (result == null)
                 return false;
 
