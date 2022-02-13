@@ -68,8 +68,8 @@ namespace API.DeskBookService.Data.Repository
         /// <returns>True or False result</returns>
         public async Task<bool> Remove(string id)
         {
-            var booking = await _deskBookings.Find(b => b.DeskId == id).AnyAsync();
-            if (booking)
+            var futureBookings = await _deskBookings.Find(b => b.DeskId == id && b.Date > System.DateTime.Now).AnyAsync();
+            if (futureBookings)
                 return false;
 
             var result = await _desks.DeleteOneAsync(desk => desk.Id == id);
