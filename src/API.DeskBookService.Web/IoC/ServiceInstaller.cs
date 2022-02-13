@@ -11,6 +11,7 @@ namespace API.DeskBookService.Web.IoC
         {
             services.AddSingleton<IDeskService,DeskService>();
             services.AddSingleton<IBookingService,BookingService>();
+            services.AddHttpContextAccessor();
         }
     }
 }
